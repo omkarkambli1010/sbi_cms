@@ -1,0 +1,118 @@
+.hint {
+  flex: 1 1 320px;
+  font-size: 13px;
+  color: var(--ink-3);
+  max-width: 62ch;
+}
+
+.panel {
+  border-radius: var(--r-16);
+  background: var(--glass);
+  backdrop-filter: var(--blur);
+  -webkit-backdrop-filter: var(--blur);
+  border: 1px solid var(--glass-line);
+  box-shadow: var(--shade-2);
+  overflow: hidden;
+}
+
+.level {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 30px 1fr auto;
+  align-items: center;
+  gap: 14px;
+  padding: 13px 18px;
+  border-top: 1px solid var(--line-soft);
+  transition: background 120ms ease;
+}
+
+.panel > .level > li:first-child > .row {
+  border-top: 0;
+}
+
+.row:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.row[data-dragging="true"] {
+  background: var(--brand-wash);
+}
+
+.rowOff .label,
+.rowOff .meta {
+  color: var(--ink-3);
+}
+
+/* A nested row is indented and carries a rule down its leading edge, so the
+   depth is readable without counting pixels. */
+.level .level .row {
+  box-shadow: inset 2px 0 0 var(--brand-wash);
+}
+
+.cell {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.label {
+  font-size: 14.5px;
+  font-weight: 500;
+  color: var(--ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.meta {
+  font-size: 12.5px;
+  color: var(--ink-3);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.parentField {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.parentLabel {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-2);
+}
+
+.parentSelect {
+  width: 100%;
+  padding: 10px 13px;
+  border: 1px solid var(--glass-edge);
+  border-radius: var(--r-8);
+  background: rgba(255, 255, 255, 0.86);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.parentSelect:focus {
+  outline: 2px solid var(--brand);
+  outline-offset: 1px;
+}
+
+.parentHelp {
+  font-size: 12.5px;
+  color: var(--ink-3);
+}
+
+@media (max-width: 767px) {
+  .row {
+    grid-template-columns: 30px 1fr;
+    row-gap: 10px;
+  }
+}

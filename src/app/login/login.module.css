@@ -1,0 +1,112 @@
+/* The sign-in screen is the one full-bleed brand moment; the card is the
+   same material as the dashboard behind it, so the transition after signing
+   in is a change of content, not of world. */
+.page {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: linear-gradient(160deg, #292075 0%, #4f45e4 100%);
+}
+
+.card {
+  width: min(420px, 100%);
+  background: var(--glass-strong);
+  backdrop-filter: var(--blur-heavy);
+  -webkit-backdrop-filter: var(--blur-heavy);
+  border: 1px solid var(--glass-line);
+  border-radius: var(--r-16);
+  padding: 36px;
+  box-shadow: 0 30px 70px rgba(12, 8, 40, 0.34);
+}
+
+.brand {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--brand-deep);
+  margin-bottom: 5px;
+}
+
+.title {
+  font-size: 25px;
+  margin-bottom: 9px;
+}
+
+.lede {
+  font-size: 14px;
+  color: var(--ink-3);
+  margin-bottom: 26px;
+  max-width: 40ch;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-2);
+  margin-bottom: 7px;
+}
+
+.input {
+  padding: 12px 15px;
+  border: 1px solid var(--glass-edge);
+  border-radius: var(--r-8);
+  background: rgba(255, 255, 255, 0.86);
+  font-size: 15px;
+  color: var(--ink);
+  margin-bottom: 18px;
+  transition: border-color 120ms ease, background 120ms ease;
+}
+
+.input:focus {
+  outline: 2px solid var(--brand);
+  outline-offset: 1px;
+  border-color: transparent;
+  background: #fff;
+}
+
+.fieldError {
+  margin: -14px 0 16px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--danger);
+}
+
+.problem {
+  font-size: 13.5px;
+  color: var(--danger);
+  background: var(--danger-bg);
+  border-radius: var(--r-8);
+  padding: 12px 14px;
+  margin-bottom: 18px;
+  border: 1px solid rgba(179, 18, 58, 0.2);
+}
+
+.submit {
+  border: 0;
+  border-radius: var(--r-8);
+  background: var(--brand);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 13px 18px;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(41, 32, 117, 0.34);
+  transition: background 120ms ease, box-shadow 120ms ease;
+}
+
+.submit:hover:not(:disabled) {
+  background: var(--brand-deep);
+}
+
+
+
+.submit:disabled {
+  opacity: 0.65;
+  cursor: progress;
+}

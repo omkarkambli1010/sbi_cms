@@ -1,0 +1,72 @@
+.skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 4px 0;
+}
+
+.bar {
+  height: 52px;
+  border-radius: var(--r-12);
+  border: 1px solid var(--glass-line);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.35) 20%,
+    rgba(255, 255, 255, 0.78) 50%,
+    rgba(255, 255, 255, 0.35) 80%
+  );
+  background-size: 300% 100%;
+  animation: shimmer 1.5s linear infinite;
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 150% 0;
+  }
+  to {
+    background-position: -150% 0;
+  }
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 44px 28px;
+  border-radius: var(--r-16);
+  border: 1px dashed rgba(41, 32, 117, 0.22);
+  background: rgba(255, 255, 255, 0.42);
+  backdrop-filter: var(--blur);
+  -webkit-backdrop-filter: var(--blur);
+}
+
+.empty p {
+  font-size: 14px;
+  color: var(--ink-3);
+  max-width: 58ch;
+}
+
+.error {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 15px 18px;
+  border-radius: var(--r-12);
+  background: var(--danger-bg);
+  border: 1px solid rgba(179, 18, 58, 0.2);
+  color: var(--danger);
+  font-size: 14px;
+}
+
+.retry {
+  margin-left: auto;
+  border: 1px solid currentColor;
+  background: none;
+  color: inherit;
+  border-radius: var(--r-8);
+  padding: 6px 14px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+}
