@@ -36,7 +36,8 @@ interface SectionRow {
   collections: { key: string; label: string }[];
 }
 
-export default function PageMap() {
+export default function PageMap({ page = "home" }: { page?: string }) {
+  const base = page === "home" ? "/dashboard/home" : `/dashboard/pages/${page}`;
   const toast = useToast();
 
   const [rows, setRows] = useState<SectionRow[] | null>(null);
@@ -50,7 +51,7 @@ export default function PageMap() {
     let cancelled = false;
 
     api
-      .get<SectionRow[]>("/api/admin/sections?page=home")
+      .get<SectionRow[]>(`/api/admin/sections?page=${page}`)
       .then((sections) => {
         if (cancelled) return;
         setRows(sections);
@@ -67,14 +68,14 @@ export default function PageMap() {
     return () => {
       cancelled = true;
     };
-  }, [version]);
+  }, [page, version]);
 
   const byId = useMemo(() => new Map((rows ?? []).map((row) => [row.id, row])), [rows]);
 
   const commit = useCallback(
     async (ids: number[]) => {
       try {
-        await api.post("/api/admin/sections/reorder", { page: "home", ids });
+        await api.post("/api/admin/sections/reorder", { page, ids });
         toast.success("Page order saved");
       } catch (error) {
         toast.error(
@@ -86,7 +87,7 @@ export default function PageMap() {
         refresh();
       }
     },
-    [toast, refresh],
+    [page, toast, refresh],
   );
 
   const reorder = useReorder(
@@ -138,7 +139,7 @@ export default function PageMap() {
 
               <div className={styles.foldText}>
                 {row.screen ? (
-                  <Link href={`/dashboard/home/${row.key}`} className={styles.foldName}>
+                  <Link href={`${base}/${row.key}`} className={styles.foldName}>
                     {row.label}
                   </Link>
                 ) : (

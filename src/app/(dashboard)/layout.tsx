@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 
 import { ToastProvider } from "@/components/ui/Toast";
-import { getSessionUser, isAuthBypassed } from "@/server/auth/session";
+import { getSession } from "@/server/backend";
 
 import DevBanner from "./DevBanner";
 import Sidebar from "./Sidebar";
@@ -17,7 +17,7 @@ import styles from "./dashboard.module.css";
  * a sticky bar above the scrolling content.
  */
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
-  const user = await getSessionUser();
+  const { user, bypassed } = await getSession();
 
   if (!user) redirect("/login");
 
@@ -30,7 +30,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
         <div className={styles.main}>
           <Topbar user={identity} />
           <main className={styles.content}>
-            {isAuthBypassed() ? <DevBanner /> : null}
+            {bypassed ? <DevBanner /> : null}
             {children}
           </main>
         </div>

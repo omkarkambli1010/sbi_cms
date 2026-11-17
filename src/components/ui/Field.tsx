@@ -39,7 +39,7 @@ export default function Field({ field, value, error, onChange }: FieldProps) {
 
   return (
     <div className={styles.field}>
-      <label className={styles.label} htmlFor={id}>
+      <label className={styles.label} id={`${id}-label`} htmlFor={id}>
         {field.label}
         {field.required ? <span className={styles.required}> (required)</span> : null}
       </label>
@@ -71,6 +71,32 @@ export default function Field({ field, value, error, onChange }: FieldProps) {
             </option>
           ))}
         </select>
+      ) : null}
+
+      {field.kind === "multiselect" ? (
+        <div
+          className={styles.lines}
+          role="group"
+          aria-labelledby={`${id}-label`}
+          aria-describedby={describedBy || undefined}
+        >
+          {field.options?.map((option) => {
+            const chosen = Array.isArray(value) ? (value as string[]) : [];
+            const on = chosen.includes(option);
+            return (
+              <label key={option} className={styles.check}>
+                <input
+                  type="checkbox"
+                  checked={on}
+                  onChange={() =>
+                    set(on ? chosen.filter((c) => c !== option) : [...chosen, option])
+                  }
+                />
+                <span>{option}</span>
+              </label>
+            );
+          })}
+        </div>
       ) : null}
 
       {field.kind === "boolean" ? (

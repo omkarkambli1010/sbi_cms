@@ -54,6 +54,8 @@ interface CollectionPanelProps {
   parentLabel?: string;
   /** Overrides the home-page paths. See CollectionRoutes. */
   routes?: CollectionRoutes;
+  /** The page this section is on; defaults to the home page. */
+  page?: string;
 }
 
 /** The sibling collection a parent chooser is filled from. */
@@ -90,6 +92,7 @@ export default function CollectionPanel({
   parents,
   parentLabel,
   routes,
+  page = "home",
 }: CollectionPanelProps) {
   const toast = useToast();
 
@@ -108,7 +111,7 @@ export default function CollectionPanel({
   const [confirmDelete, setConfirmDelete] = useState<Row | null>(null);
   const [deleting, setDeleting] = useState(false);
 
-  const base = `/api/admin/home/${section}/${def.key}`;
+  const base = `/api/admin/pages/${page}/${section}/${def.key}`;
   const query = parentId === null ? "" : `?parent=${parentId}`;
 
   /* The default is the home-page shape; `routes` replaces it wholesale. */

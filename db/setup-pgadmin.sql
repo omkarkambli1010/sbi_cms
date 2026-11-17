@@ -42,6 +42,20 @@ BEGIN
 END
 $bootstrap$;
 
+-- API role ------------------------------------------------------------------
+-- Used only by cms-backend: it may EXECUTE the cms.* routines and touch no
+-- table. Use a different password from the one above, and put it in
+-- cms-backend/.env as DATABASE_URL.
+DO $api$
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'sbi_cms_api') THEN
+    CREATE ROLE sbi_cms_api LOGIN PASSWORD 'REPLACE_WITH_API_PASSWORD' NOSUPERUSER NOCREATEDB NOCREATEROLE;
+  ELSE
+    ALTER ROLE sbi_cms_api LOGIN PASSWORD 'REPLACE_WITH_API_PASSWORD';
+  END IF;
+END
+$api$;
+
 -- Database --------------------------------------------------------------------
 -- CREATE DATABASE cannot run inside a transaction or a DO block, so it is not
 -- guarded here. Running this a second time reports
@@ -52,3 +66,4 @@ $bootstrap$;
 CREATE DATABASE sbi_cms OWNER sbi_cms ENCODING 'UTF8';
 
 GRANT ALL PRIVILEGES ON DATABASE sbi_cms TO sbi_cms;
+GRANT CONNECT ON DATABASE sbi_cms TO sbi_cms_api;

@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 
 import { api } from "@/lib/apiClient";
+import { CONTENT_PAGE_ORDER, CONTENT_PAGES } from "@/server/cms/pages";
 import { SECTIONS, SECTION_ORDER } from "@/server/cms/registry";
 
 import styles from "./dashboard.module.css";
@@ -52,6 +53,18 @@ export default function Topbar({ user }: TopbarProps) {
         href: `/dashboard/home/${key}`,
         group: "Home page",
       })),
+      ...CONTENT_PAGE_ORDER.flatMap((slug) => {
+        const page = CONTENT_PAGES[slug];
+        return [
+          { label: page.label, href: `/dashboard/pages/${slug}`, group: "Pages" },
+          ...page.sectionOrder.map((key) => ({
+            label: `${page.label} — ${page.sections[key]?.label ?? SECTIONS[key]?.label ?? key}`,
+            href: `/dashboard/pages/${slug}/${key}`,
+            group: page.label,
+          })),
+          { label: `${page.label} — SEO`, href: `/dashboard/pages/${slug}/seo`, group: page.label },
+        ];
+      }),
       ...CHROME,
     ],
     [],

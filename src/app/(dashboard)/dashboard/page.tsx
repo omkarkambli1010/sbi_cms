@@ -1,23 +1,23 @@
 import Link from "next/link";
 
-import { requireUser } from "@/server/auth/session";
-import { callFunction, pingDatabase } from "@/server/db/pool";
+import { backendGet } from "@/server/backend";
 
 import styles from "./overview.module.css";
 
 export const metadata = { title: "Overview" };
 export const dynamic = "force-dynamic";
 
-interface CountRow {
-  label: string;
-  total: string;
-  inactive: string;
+interface Overview {
+  database: { healthy: boolean };
+  counts: { label: string; total: number; inactive: number }[];
 }
 
 export default async function OverviewPage() {
-  await requireUser();
-  const healthy = await pingDatabase();
-  const counts = healthy ? await callFunction<CountRow>("cms.overview_counts") : [];
+  /* The backend reports database health itself, and answers null when it
+     cannot be reached at all; both read as "not answering" here. */
+  const overview = await backendGet<Overview>("/api/admin/overview");
+  const healthy = overview?.database.healthy ?? false;
+  const counts = overview?.counts ?? [];
 
   return (
     <>
@@ -34,7 +34,8 @@ export default async function OverviewPage() {
           <h2>The database is not answering</h2>
           <p>
             Nothing can be read or saved until it is back. Check that PostgreSQL is running and
-            that <code>DATABASE_URL</code> points at it.
+            that the content service (<code>cms-backend</code>) is running and its{" "}
+            <code>DATABASE_URL</code> points at it.
           </p>
         </div>
       ) : null}
@@ -75,7 +76,7 @@ export default async function OverviewPage() {
             <h2>What is in the CMS</h2>
             <ul className={styles.counts}>
               {counts.map((row) => {
-                const inactive = Number(row.inactive);
+                const inactive = row.inactive;
 
                 return (
                   <li key={row.label}>

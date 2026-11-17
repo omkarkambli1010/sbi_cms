@@ -39,7 +39,10 @@ export type FieldKind =
   | "media"
   | "date"
   | "datetime"
-  | "select";
+  | "select"
+  /* Several options at once, stored as a list of the chosen option strings.
+     Used by the inner pages (a leader's tabs, a sector's exchanges). */
+  | "multiselect";
 
 export interface FieldDef {
   /** Matches the stored function's parameter, minus the `p_` prefix. */

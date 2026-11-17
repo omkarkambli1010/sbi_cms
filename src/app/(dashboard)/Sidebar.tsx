@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 
+import { CONTENT_PAGE_ORDER, CONTENT_PAGES } from "@/server/cms/pages";
 import { SECTION_ORDER, SECTIONS } from "@/server/cms/registry";
 
 import styles from "./dashboard.module.css";
@@ -148,6 +149,81 @@ export default function Sidebar() {
 
   const homeOpen = isOpen("home", inHome);
 
+  /* The inner pages (About, Leadership, Sector) follow the same pattern as the
+     home page: the label goes to the hub, the chevron folds the sections away.
+     Sections reused from the home page (FAQ, app promo …) are labelled from the
+     home registry. */
+  const pageGroup = (slug: string) => {
+    const page = CONTENT_PAGES[slug];
+    const base = `/dashboard/pages/${slug}`;
+    const inPage = pathname === base || pathname.startsWith(`${base}/`);
+    const open = isOpen(slug, inPage);
+    const labelOf = (key: string) =>
+      page.sections[key]?.label ?? SECTIONS[key]?.label ?? key;
+
+    return (
+      <li key={slug} className={styles.navGroup}>
+        <span className={styles.navRow}>
+          <Link
+            href={base}
+            className={`${styles.navLink} ${styles.navLinkGrow} ${pathname === base ? styles.navLinkActive : ""}`}
+            aria-current={pathname === base ? "page" : undefined}
+          >
+            {page.label}
+          </Link>
+
+          <button
+            type="button"
+            className={styles.navDisclosure}
+            aria-expanded={open}
+            aria-controls={`nav-group-${slug}`}
+            onClick={() => toggle(slug, inPage)}
+          >
+            <Chevron open={open} />
+            <span className="visually-hidden">
+              {open ? `Hide the ${page.label} sections` : `Show the ${page.label} sections`}
+            </span>
+          </button>
+        </span>
+
+        <div
+          id={`nav-group-${slug}`}
+          className={`${styles.collapse} ${open ? styles.collapseOpen : ""}`}
+        >
+          <div className={styles.collapseInner}>
+            <ol className={styles.foldList}>
+              {page.sectionOrder.map((key, index) => {
+                const href = `${base}/${key}`;
+                const active = pathname === href;
+                return (
+                  <li key={key}>
+                    <Link
+                      href={href}
+                      className={`${styles.foldLink} ${active ? styles.foldLinkActive : ""}`}
+                      aria-current={active ? "page" : undefined}
+                    >
+                      <span className={styles.foldIndex}>{index + 1}</span>
+                      {labelOf(key)}
+                    </Link>
+                  </li>
+                );
+              })}
+              <li>
+                <Link
+                  href={`${base}/seo`}
+                  className={`${styles.foldLink} ${pathname === `${base}/seo` ? styles.foldLinkActive : ""}`}
+                >
+                  <span className={styles.foldIndex}>•</span>
+                  SEO
+                </Link>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </li>
+    );
+  };
+
   return (
     <>
       <button
@@ -253,6 +329,8 @@ export default function Sidebar() {
               </div>
             </div>
           </li>
+
+          {CONTENT_PAGE_ORDER.map((slug) => pageGroup(slug))}
 
           {group("site", "Site-wide", inSiteWide, SITE_WIDE)}
           {group("library", "Library", inLibrary, LIBRARY)}

@@ -73,7 +73,8 @@ export default function BlockForm({
       {fields.map((field) => (
         <div
           key={field.name}
-          className={field.kind === "textarea" || field.kind === "lines" ? styles.formWide : ""}
+          className={field.kind === "textarea" || field.kind === "lines" || field.kind === "multiselect"
+              ? styles.formWide : ""}
         >
           <Field
             field={field}

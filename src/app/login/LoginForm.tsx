@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- `api` is unused only while sign-in is bypassed
 import { api, ApiError } from "@/lib/apiClient";
 
 import styles from "./login.module.css";
@@ -23,7 +24,10 @@ export default function LoginForm() {
     setBusy(true);
 
     try {
-      await api.post("/api/auth/login", { username, password });
+      /* TEMPORARY: sign-in is skipped and the form goes straight to the
+         dashboard. The session comes from cms-backend's CMS_DEV_BYPASS_AUTH.
+         Restore the call below (and turn the bypass off) before release. */
+      // await api.post("/api/auth/login", { username, password });
 
       /* refresh() as well as push(): the dashboard layout reads the session
          on the server, so the cache for it has to be thrown away or the

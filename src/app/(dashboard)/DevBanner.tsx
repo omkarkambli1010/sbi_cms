@@ -11,7 +11,7 @@ export default function DevBanner() {
   return (
     <div className={styles.devBanner} role="status">
       <strong>Sign-in is switched off.</strong> Anyone who can reach this address is an
-      administrator. Remove <code>CMS_DEV_BYPASS_AUTH</code> from <code>.env.local</code> to put
+      administrator. Remove <code>CMS_DEV_BYPASS_AUTH</code> from <code>cms-backend/.env</code> to put
       the login back.
     </div>
   );

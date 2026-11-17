@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 
-import { getSessionUser } from "@/server/auth/session";
+import { getSessionUser } from "@/server/backend";
 
 import LoginForm from "./LoginForm";
 import styles from "./login.module.css";
